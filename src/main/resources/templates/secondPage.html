@@ -1,0 +1,54 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{/secondPage}" th:object="${merchantAndDateDto}" method="post">
+    <div th:errors="*{merchant}"></div>
+    <h4>Впишите торговца как показанно ниже</h4>
+    <input type="text" th:field="*{merchant}" id="merchant" placeholder="Kwik E-Mart" required>
+    <h4>Впишите дату как показанно ниже</h4>
+    <div th:errors="*{date}"></div>
+    <input type="text" th:field="*{date}" id="date" placeholder="2018-08-20" required>
+    <button type="submit">Поиск</button>
+</form>
+<br>
+<div th:if="${showNothing}">
+     <h1>Ничего не найдено</h1>
+</div>
+<div th:if="${showTable}">
+    <table border="1">
+        <caption>Таблица транзакций</caption>
+        <tr>
+            <th>id</th>
+            <th>Дата</th>
+            <th>Сумма</th>
+            <th>Торговец</th>
+            <th>Тип</th>
+        </tr>
+        <th:block th:each="transaction : ${transaction}">
+            <tr>
+                <td><th:block th:text="${transaction.getId()}"></th:block></td>
+                <td><th:block th:text="${transaction.getDate()}"></th:block></td>
+                <td><th:block th:text="${transaction.getAmount()}"></th:block></td>
+                <td><th:block th:text="${transaction.getMerchant()}"></th:block></td>
+                <td><th:block th:text="${transaction.getType()}"></th:block></td>
+            </tr>
+        </th:block>
+    </table>
+
+    <h1>
+        Средняя стоимость транзакции для продавца:
+        <th:block th:text="${avg}"></th:block>
+    </h1>
+    <h1>Общее количество:
+        <th:block th:text="${transaction.size()}"></th:block>
+    </h1>
+</div>
+</body>
+</html>

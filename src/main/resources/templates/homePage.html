@@ -1,0 +1,38 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home Page</title>
+</head>
+<body>
+<table border="1">
+    <caption>Таблица транзакций</caption>
+    <tr>
+        <th>id</th>
+        <th>Дата</th>
+        <th>Сумма</th>
+        <th>Торговец</th>
+        <th>Тип</th>
+    </tr>
+    <th:block th:each="transaction : ${transaction}">
+        <tr>
+            <td><th:block th:text="${transaction.getId()}"></th:block></td>
+            <td><th:block th:text="${transaction.getDate()}"></th:block></td>
+            <td><th:block th:text="${transaction.getAmount()}"></th:block></td>
+            <td><th:block th:text="${transaction.getMerchant()}"></th:block></td>
+            <td><th:block th:text="${transaction.getType()}"></th:block></td>
+        </tr>
+    </th:block>
+</table>
+<h1>Общее количество:
+    <th:block th:text="${transaction.size()}"></th:block>
+</h1>
+<br>
+<h1>
+    <a th:href="secondPage">Поиск по конретной дате и продавцу</a>
+</h1>
+</body>
+</html>
