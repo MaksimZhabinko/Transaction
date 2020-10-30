@@ -11,6 +11,7 @@ import targSoft.service.SecondPageService;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.OptionalDouble;
 
 @Service
 public class SecondPageServiceImpl implements SecondPageService {
@@ -37,18 +38,12 @@ public class SecondPageServiceImpl implements SecondPageService {
 
         List<TransactionDto> transactionDtos = entityBeanConverter.converterToDtoList(transactionEntities,
                 TransactionDto.class);
-        Double sum = 0.0;
-        int count = 0;
-        for (TransactionDto transactionDto : transactionDtos) {
-            if (transactionDto.getType().equals("PAYMENT")) {
-                sum += transactionDto.getAmount();
-                count++;
-            }
-        }
-        Double avg = sum/count;
+
+        OptionalDouble avg = transactionDtos.stream().filter(el -> el.getType().equals("PAYMENT")).
+                mapToDouble(el -> el.getAmount()).average();
 
         transactionAvgDto.setTransactionDtos(transactionDtos);
-        transactionAvgDto.setAvg(avg);
+        transactionAvgDto.setAvg(avg.getAsDouble());
 
         return transactionAvgDto;
     }
